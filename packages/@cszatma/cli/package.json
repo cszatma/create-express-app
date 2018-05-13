@@ -1,0 +1,53 @@
+{
+  "name": "@cszatma/create-express-app",
+  "version": "0.1.0",
+  "description": "CLI to generate easily generate express apps with minimal configuration.",
+  "keywords": [
+    "express gen",
+    "express generate",
+    "create express",
+    "express creator"
+  ],
+  "author": {
+    "name": "Christopher Szatmary",
+    "email": "cs@christopherszatmary.com",
+    "url": "https://christopherszatmary.com"
+  },
+  "repository": "cszatma/create-express-app",
+  "bugs": {
+    "url": "https://github.com/cszatma/create-express-app/issues"
+  },
+  "license": "MIT",
+  "bin": {
+    "create-express-app": "build/index.js"
+  },
+  "files": [
+    "build/"
+  ],
+  "engines": {
+    "node": ">=6"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "commander": "^2.15.1",
+    "cross-spawn": "^6.0.5",
+    "deepmerge": "^2.1.0",
+    "fs-extra": "^6.0.0",
+    "inquirer": "^5.2.0",
+    "semver": "^5.5.0",
+    "validate-npm-package-name": "^3.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p ./tsconfig.build.json",
+    "clean": "rimraf build/",
+    "create-express-app": "node build/index.js",
+    "prepare": "yarn run clean && yarn run build",
+    "watch": "tsc -p ./tsconfig.build.json -w"
+  },
+  "devDependencies": {
+    "@types/deepmerge": "^2.1.0"
+  }
+}
