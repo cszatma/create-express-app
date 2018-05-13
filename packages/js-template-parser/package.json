@@ -1,0 +1,40 @@
+{
+  "name": "js-template-parser",
+  "version": "0.1.0",
+  "description": "Shared utilities for node.",
+  "keywords": [
+    "js template",
+    "parse template",
+    "js inject"
+  ],
+  "author": {
+    "name": "Christopher Szatmary",
+    "email": "cs@christopherszatmary.com",
+    "url": "https://christopherszatmary.com"
+  },
+  "repository": "cszatma/express-gen",
+  "bugs": {
+    "url": "https://github.com/cszatma/express-gen/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "build/"
+  ],
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc -p ./tsconfig.build.json",
+    "clean": "rimraf build/",
+    "prepare": "yarn run clean && yarn run build",
+    "watch": "tsc -p ./tsconfig.build.json -w"
+  },
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "fs-extra": "^6.0.1",
+    "resolve": "^1.7.1"
+  },
+  "devDependencies": {
+    "@types/ejs": "^2.5.1",
+    "@types/fs-extra": "^5.0.2",
+    "@types/resolve": "^0.0.8"
+  }
+}

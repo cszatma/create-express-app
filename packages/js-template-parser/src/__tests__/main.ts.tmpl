@@ -1,0 +1,9 @@
+const name = 'main template';
+
+console.log('name of the file is ' + name);
+
+<%_ if (locals.react) { _%>
+console.log('using react');
+<%_ } else { _%>
+console.log('not using react');
+<%_ } _%>

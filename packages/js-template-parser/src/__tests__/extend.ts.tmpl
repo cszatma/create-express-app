@@ -1,0 +1,12 @@
+@options
+{
+  "extend": "./main.ts.tmpl",
+  "replace": [
+    "const name = 'main template';"
+  ]
+}
+@end
+
+<%# @replace %>
+const name = 'test template ftw!!!';
+<%# @end %>
