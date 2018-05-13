@@ -24,7 +24,7 @@ export function logWithSpinner(symbol: string, message?: string): void {
     });
   }
 
-  spinner.text = ` ${message}`;
+  spinner.text = `${symbol} ${message}`;
   lastMsg = {
     symbol: `${symbol} `,
     text: message,
