@@ -3,6 +3,7 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es5",
+    "strict": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
     "sourceMap": false,

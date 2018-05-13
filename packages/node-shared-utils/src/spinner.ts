@@ -33,7 +33,7 @@ export function logWithSpinner(symbol: string, message?: string): void {
   spinner.start();
 }
 
-export function stopSpinner(persist: boolean): void {
+export function stopSpinner(persist?: boolean): void {
   if (lastMsg && persist) {
     spinner.stopAndPersist({
       symbol: lastMsg.symbol,
