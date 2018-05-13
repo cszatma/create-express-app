@@ -1,0 +1,32 @@
+{
+  "name": "node-shared-utils",
+  "version": "0.1.0",
+  "description": "Shared utilities for node.",
+  "keywords": [
+    "utils",
+    "node-utils"
+  ],
+  "author": {
+    "name": "Christopher Szatmary",
+    "email": "cs@christopherszatmary.com",
+    "url": "https://christopherszatmary.com"
+  },
+  "repository": "cszatma/express-gen",
+  "bugs": {
+    "url": "https://github.com/cszatma/express-gen/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "build/"
+  ],
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc -p ./tsconfig.build.json",
+    "clean": "rimraf build/",
+    "prepare": "yarn run clean && yarn run build",
+    "watch": "tsc -p ./tsconfig.build.json -w"
+  },
+  "dependencies": {
+    "chalk": "^2.4.1"
+  }
+}
