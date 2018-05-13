@@ -12,7 +12,10 @@
         "node_modules/*",
         "src/types/*"
       ]
-    }
+    },
+    "types": [
+      "node-shared-utils"
+    ]
   },
   "include": [
     "packages"

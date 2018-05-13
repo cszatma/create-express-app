@@ -37,6 +37,7 @@
     "deepmerge": "^2.1.0",
     "fs-extra": "^6.0.0",
     "inquirer": "^5.2.0",
+    "node-shared-utils": "^0.1.0",
     "semver": "^5.5.0",
     "validate-npm-package-name": "^3.0.0"
   },

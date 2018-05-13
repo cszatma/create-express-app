@@ -21,6 +21,7 @@
     "build/"
   ],
   "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "clean": "rimraf build/",
