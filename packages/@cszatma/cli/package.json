@@ -41,14 +41,15 @@
     "semver": "^5.5.0",
     "validate-npm-package-name": "^3.0.0"
   },
+  "devDependencies": {
+    "@types/deepmerge": "^2.1.0",
+    "@types/inquirer": "^0.0.41"
+  },
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "clean": "rimraf build/",
     "create-express-app": "node build/index.js",
     "prepare": "yarn run clean && yarn run build",
     "watch": "tsc -p ./tsconfig.build.json -w"
-  },
-  "devDependencies": {
-    "@types/deepmerge": "^2.1.0"
   }
 }
