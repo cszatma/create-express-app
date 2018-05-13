@@ -10,6 +10,7 @@ const program = new Command(packageJson.name)
   .usage('<project-name> [options]')
   .option('-f,--force', 'Overwrite the directory if it already exists')
   .option('--use-npm', 'Use npm as the package manager')
+  .option('--no-git', 'Does not create a git repo in the project')
   .action(create);
 
 program.parse(process.argv);

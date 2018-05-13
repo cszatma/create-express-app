@@ -1,3 +1,5 @@
+import { yarnExists } from 'node-shared-utils';
+
 export interface Plugin {
   name: string;
   options: any;
@@ -9,6 +11,7 @@ export interface Dependency {
 }
 
 export interface Preset {
+  name: string;
   packageManager: 'yarn' | 'npm';
   transpiler?: Plugin;
   linter?: Plugin;
@@ -17,14 +20,17 @@ export interface Preset {
 }
 
 const defaultPackages = () => [{ name: 'body-parser' }];
+const packageManager = yarnExists() ? 'yarn' : 'npm';
 
 const defaultPreset: Preset = {
-  packageManager: 'yarn',
+  name: 'default',
+  packageManager,
   extraPackages: defaultPackages(),
 };
 
 const typescriptPreset: Preset = {
-  packageManager: 'yarn',
+  name: 'typescript',
+  packageManager,
   transpiler: {
     name: '@cszatma/express-plugin-typescript',
     options: {},
@@ -33,7 +39,8 @@ const typescriptPreset: Preset = {
 };
 
 const reactPreset: Preset = {
-  packageManager: 'yarn',
+  name: 'react',
+  packageManager,
   frontEnd: {
     name: 'react',
     options: {},
