@@ -28,6 +28,10 @@
     "watch": "tsc -p ./tsconfig.build.json -w"
   },
   "dependencies": {
-    "chalk": "^2.4.1"
+    "chalk": "^2.4.1",
+    "ora": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/ora": "^1.3.4"
   }
 }
