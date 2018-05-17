@@ -16,7 +16,8 @@
     ],
     "no-implicit-dependencies": false,
     "ordered-imports": false,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "no-submodule-imports": false
   },
   "rulesDirectory": ["tslint-plugin-prettier"]
 }
