@@ -5,6 +5,7 @@ import { logWithSpinner, stopSpinner, gitExists } from 'node-shared-utils';
 import { execSync } from 'child_process';
 
 import checkAppName from './utils/checkAppName';
+import isSafeToCreateProjectIn from './utils/isSafeToCreateProjectIn';
 import createFromPreset from './setup/createFromPreset';
 import packageManagerPrompt from './prompts/packageManager';
 import choosePresetPrompt from './prompts/choosePreset';
@@ -24,18 +25,30 @@ export default async function create(projectName: string, options: Options) {
     fs.emptyDirSync(targetDir);
   } else {
     fs.ensureDirSync(targetDir);
+    if (!isSafeToCreateProjectIn(targetDir, projectName)) {
+      return process.exit(1);
+    }
   }
 
   // Start creation
+
+  // Create package.json
   const packageJson = {
     name: projectName,
     version: '0.1.0',
     private: true,
   };
 
+  fs.writeFileSync(
+    path.join(targetDir, 'package.json'),
+    JSON.stringify(packageJson, null, 2),
+  );
+
+  // Save directory cli was executed from and change into project directory
   const originalDirectory = process.cwd();
   process.chdir(targetDir);
 
+  // Create a git repo unless specified not to
   if (!options.noGit && gitExists) {
     logWithSpinner(`🗃`, `Initializing git repository...`);
     execSync('git init');
@@ -59,6 +72,6 @@ export default async function create(projectName: string, options: Options) {
       )} with the ${chalk.cyan(preset.name)} preset.\n`,
     );
 
-    createFromPreset(preset, packageJson);
+    await createFromPreset(preset, packageJson, targetDir);
   }
 }
