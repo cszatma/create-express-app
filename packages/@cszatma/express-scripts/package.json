@@ -1,0 +1,44 @@
+{
+  "name": "@cszatma/express-scripts",
+  "version": "0.1.0",
+  "description": "Configuration and scripts for create-express-app.",
+  "keywords": [
+    "express scripts",
+    "express build",
+    "express start"
+  ],
+  "author": {
+    "name": "Christopher Szatmary",
+    "email": "cs@christopherszatmary.com",
+    "url": "https://christopherszatmary.com"
+  },
+  "repository": "cszatma/create-express-app",
+  "bugs": {
+    "url": "https://github.com/cszatma/create-express-app/issues"
+  },
+  "license": "MIT",
+  "bin": {
+    "express-scripts": "build/express-scripts.js"
+  },
+  "files": [
+    "build/"
+  ],
+  "engines": {
+    "node": ">=6"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "globby": "^8.0.1"
+  },
+  "devDependencies": {
+    "@types/globby": "^6.1.0"
+  },
+  "scripts": {
+    "build": "tsc -p ./tsconfig.build.json && cpx \"src/template/**/*.tmpl\" build/template",
+    "clean": "rimraf build/",
+    "prepare": "yarn run clean && yarn run build",
+    "watch": "tsc -p ./tsconfig.build.json -w"
+  }
+}

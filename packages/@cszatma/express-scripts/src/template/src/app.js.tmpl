@@ -1,0 +1,16 @@
+const express = require('express');
+<%_ if (options.bodyParser) { _%>
+const bodyParser = require('body-parser');
+<%_ } _%>
+
+const helloRoutes = require('./routes/hello');
+
+const app = express();
+
+<%_ if (options.bodyParser) { _%>
+app.use(bodyParser.json());
+<%_ } _%>
+
+app.use('/', helloRoutes);
+
+module.exports = app;
