@@ -1,5 +1,6 @@
 import ejs from 'ejs';
 import fs from 'fs-extra';
+import path from 'path';
 
 import generateContent from './generateContent';
 import parseTemplate from './parseTemplate';
@@ -27,6 +28,16 @@ export function getFileName(templateName: string): string {
   } else {
     return templateName;
   }
+}
+
+export function writeTemplate(
+  template: string,
+  outputFile: string,
+  data: any = {},
+): void {
+  const output = getFileName(outputFile);
+  fs.ensureDirSync(path.dirname(output));
+  fs.writeFileSync(output, render(template, data));
 }
 
 export { Template, TemplateOptions } from './parseTemplate';
