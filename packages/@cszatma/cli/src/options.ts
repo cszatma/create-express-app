@@ -11,12 +11,21 @@ export interface Options {
   };
 }
 
+// Store the options in the user's home directory
 export const rcPath = path.join(os.homedir(), '.cearc');
 
-export function loadOptions(): Optional<Options> {
+let cachedOptions: Options;
+
+export function loadOptions(): Options {
+  // Cache the options so they can retrieved quickly and easily later
+  if (cachedOptions) {
+    return cachedOptions;
+  }
+
   if (fs.existsSync(rcPath)) {
+    // Read ~/.cearc
     try {
-      return JSON.parse(fs.readFileSync(rcPath, 'utf-8'));
+      cachedOptions = JSON.parse(fs.readFileSync(rcPath, 'utf-8'));
     } catch (error) {
       exitFailure(
         `Error loading saved preferences. ~/.cearc might be corrupted or have synatx errors. Please fix/delete it then rerun create-express-app.\n(${
@@ -24,8 +33,10 @@ export function loadOptions(): Optional<Options> {
         }`,
       );
     }
+
+    return cachedOptions;
   } else {
-    return undefined;
+    return { presets: {} };
   }
 }
 
@@ -39,4 +50,25 @@ export function saveOptions(options: Options): void {
       })`,
     );
   }
+}
+
+export function savePreset(preset: Preset): void {
+  const options = loadOptions() || { presets: {} };
+  options.presets[preset.name] = preset;
+
+  saveOptions(options);
+}
+
+export function removePreset(presetName: string): number {
+  const options = loadOptions();
+
+  if (!options.presets[presetName]) {
+    // Preset doesn't exist, return 1 to indicate this to the caller
+    return 1;
+  }
+
+  // Remove the preset
+  delete options.presets[presetName];
+  saveOptions(options);
+  return 0;
 }
