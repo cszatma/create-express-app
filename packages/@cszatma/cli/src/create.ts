@@ -7,16 +7,18 @@ import { execSync } from 'child_process';
 import checkAppName from './utils/checkAppName';
 import isSafeToCreateProjectIn from './utils/isSafeToCreateProjectIn';
 import createFromPreset from './setup/createFromPreset';
-import packageManagerPrompt from './prompts/packageManager';
 import choosePresetPrompt from './prompts/choosePreset';
+import customPreset from './customPreset';
+import { loadOptions } from './options';
+import { CUSTOM_PRESET_KEY } from './presets';
 
-interface Options {
+interface CliOptions {
   force: boolean;
   useNpm: boolean;
   noGit: boolean;
 }
 
-export default async function create(projectName: string, options: Options) {
+export default async function create(projectName: string, options: CliOptions) {
   const targetDir = path.resolve(projectName);
   checkAppName(projectName);
 
@@ -55,23 +57,21 @@ export default async function create(projectName: string, options: Options) {
   }
 
   stopSpinner(true);
-  const preset = await choosePresetPrompt();
 
-  if (preset === 'custom') {
-    const packageManager = options.useNpm
-      ? 'npm'
-      : await packageManagerPrompt();
-    // const prompts = ['transpiler', 'linter', 'frontEnd', 'extraPackages'].map(
-    //   file => require(`./prompts/${file}`),
-    // );
-  } else {
-    logWithSpinner(
-      '⚒️🚧',
-      `Creating new Express app in ${chalk.cyan(
-        targetDir,
-      )} with the ${chalk.cyan(preset.name)} preset.\n`,
-    );
+  loadOptions();
 
-    await createFromPreset(preset, packageJson, targetDir);
-  }
+  const presetAnswer = await choosePresetPrompt();
+  const preset =
+    presetAnswer === CUSTOM_PRESET_KEY
+      ? await customPreset(options.useNpm)
+      : presetAnswer;
+
+  logWithSpinner(
+    '⚒️🚧',
+    `Creating new Express app in ${chalk.cyan(targetDir)} with the ${chalk.cyan(
+      preset.name,
+    )} preset.\n`,
+  );
+
+  await createFromPreset(preset, packageJson, targetDir);
 }
