@@ -20,8 +20,11 @@ export interface Preset {
 
 const defaultDependencies = () => ['body-parser'];
 const packageManager = yarnExists() ? 'yarn' : 'npm';
-const defaultPort = 8000;
 
+export const defaultPort = 8000;
+export const CUSTOM_PRESET_KEY = '__custom__';
+
+/* Built-in Presets */
 const defaultPreset: Preset = {
   name: 'default',
   packageManager,
@@ -35,7 +38,7 @@ const typescriptPreset: Preset = {
   packageManager,
   port: defaultPort,
   transpiler: {
-    name: '@cszatma/express-plugin-typescript',
+    name: 'typescript',
     options: {},
     dependencies: [],
     devDependencies: [],
@@ -57,11 +60,12 @@ const reactPreset: Preset = {
   dependencies: defaultDependencies(),
   devDependencies: [],
 };
+/* End Built-in Presets */
 
 const presets: { [key: string]: Preset } = {
-  defaultPreset,
-  typescriptPreset,
-  reactPreset,
+  default: defaultPreset,
+  typescript: typescriptPreset,
+  react: reactPreset,
 };
 
 export default presets;
