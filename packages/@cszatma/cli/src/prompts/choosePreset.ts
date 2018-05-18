@@ -1,41 +1,39 @@
 import inquirer, { Question } from 'inquirer';
+import { capitalizeString } from 'node-shared-utils';
 
-import presets, { Preset } from '../presets';
+import presets, { CUSTOM_PRESET_KEY, Preset } from '../presets';
+import { loadOptions } from '../options';
 
 interface Answer {
   preset: string;
 }
 
-const presetQuestion: Question = {
+const presetQuestion = (presetNames: string[]): Question<Answer> => ({
   name: 'preset',
   type: 'list',
   message: 'Pick a preset to use:',
   choices: [
-    {
-      name: 'Default',
-      value: 'defaultPreset',
-    },
-    {
-      name: 'Typescript',
-      value: 'typescriptPreset',
-    },
-    {
-      name: 'React',
-      value: 'reactPreset',
-    },
+    ...presetNames.map(preset => ({
+      name: capitalizeString(preset),
+      value: preset,
+    })),
     {
       name: 'Manually pick options',
-      value: 'custom',
+      value: CUSTOM_PRESET_KEY,
     },
   ],
-};
+});
 
-export default async function choosePreset(): Promise<Preset | 'custom'> {
-  const { preset } = await inquirer.prompt<Answer>(presetQuestion);
+export default async function choosePreset(): Promise<Preset | '__custom__'> {
+  // Combine all presets
+  const allPresets = { ...loadOptions().presets, ...presets };
+  const { preset } = await inquirer.prompt<Answer>(
+    presetQuestion(Object.keys(allPresets)),
+  );
 
-  if (preset === 'custom') {
-    return 'custom';
+  if (preset === CUSTOM_PRESET_KEY) {
+    return CUSTOM_PRESET_KEY;
   }
 
-  return presets[preset];
+  return allPresets[preset];
 }

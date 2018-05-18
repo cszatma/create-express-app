@@ -7,7 +7,7 @@ interface Answer {
   packageManager: PackageManager;
 }
 
-const packageManagerQuestion: Question = {
+const packageManagerQuestion: Question<Answer> = {
   name: 'packageManager',
   type: 'list',
   message: 'Pick the package manager to use:',
@@ -28,6 +28,7 @@ export default async function packageManagerPrompt(): Promise<PackageManager> {
     packageManagerQuestion,
   );
 
+  // Make sure yarn is installed otherwise use npm
   if (packageManager === 'yarn' && !yarnExists()) {
     logError('yarn is not installed on your machine. Using npm instead.\n');
     return 'npm';
