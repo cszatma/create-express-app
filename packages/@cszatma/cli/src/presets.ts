@@ -44,7 +44,7 @@ const typescriptPreset: Preset = {
     devDependencies: [],
   },
   dependencies: defaultDependencies(),
-  devDependencies: ['@types/express'],
+  devDependencies: ['@types/express', '@types/body-parser'],
 };
 
 const reactPreset: Preset = {

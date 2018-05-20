@@ -1,12 +1,9 @@
 import inquirer, { Question } from 'inquirer';
 
+import { Dependencies } from '../utils/flattenPresetDeps';
+
 interface Answer {
   extraPackages: string[];
-}
-
-interface Packages {
-  dependencies: string[];
-  devDependencies: string[];
 }
 
 const extraPackagesQuestion: Question<Answer> = {
@@ -31,7 +28,7 @@ const extraPackagesQuestion: Question<Answer> = {
 
 export default async function extraPackagesPrompt(
   usingTypescript: boolean,
-): Promise<Packages> {
+): Promise<Dependencies> {
   const { extraPackages } = await inquirer.prompt<Answer>(
     extraPackagesQuestion,
   );
