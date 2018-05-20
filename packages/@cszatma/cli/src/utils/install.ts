@@ -1,6 +1,6 @@
 import { spawn } from 'child_process';
 
-import { PackageManager } from '../prompts/packageManager';
+import { PackageManager } from '../presets';
 
 export default async function install(
   packageManager: PackageManager,
