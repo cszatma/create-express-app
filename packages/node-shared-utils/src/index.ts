@@ -1,5 +1,6 @@
 export * from './commandExists';
 export * from './logger';
+export * from './objectUtils';
 export * from './spinner';
 export * from './stringUtils';
 
