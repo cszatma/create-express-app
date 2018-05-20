@@ -7,6 +7,7 @@
     "strict": true,
     "moduleResolution": "node",
     "sourceMap": false,
+    "declaration": true,
     "rootDir": "src",
     "outDir": "build",
     "baseUrl": "./",

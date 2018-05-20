@@ -9,8 +9,8 @@ const app = express();
 
 <%_ if (options.bodyParser) { _%>
 app.use(bodyParser.json());
-<%_ } _%>
 
+<%_ } _%>
 app.use('/', helloRoutes);
 
 module.exports = app;
