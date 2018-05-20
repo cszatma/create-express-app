@@ -1,5 +1,5 @@
 import inquirer, { Question } from 'inquirer';
-import { defaultPort } from '../presets';
+import { defaultPort } from '../presets/defaultValues';
 
 interface Answer {
   port: string;
