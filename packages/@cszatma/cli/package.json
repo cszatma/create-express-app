@@ -38,13 +38,15 @@
     "fs-extra": "^6.0.0",
     "inquirer": "^5.2.0",
     "js-template-parser": "^0.1.0",
+    "lodash": "^4.17.10",
     "node-shared-utils": "^0.1.0",
     "semver": "^5.5.0",
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {
     "@types/deepmerge": "^2.1.0",
-    "@types/inquirer": "^0.0.41"
+    "@types/inquirer": "^0.0.41",
+    "@types/lodash": "^4.14.109"
   },
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
