@@ -1,10 +1,11 @@
 import inquirer, { Question } from 'inquirer';
 import { Optional } from 'node-shared-utils';
 
-import { Plugin } from '../presets';
+import { Plugin, Transpiler } from '../presets';
+import getPackages from '../utils/getPackages';
 
 interface Answer {
-  transpiler: string;
+  transpiler: Transpiler | 'none';
 }
 
 const transpilerQuestion: Question<Answer> = {
@@ -30,21 +31,18 @@ const transpilerQuestion: Question<Answer> = {
 export default async function transpilerPrompt(): Promise<Optional<Plugin>> {
   const { transpiler } = await inquirer.prompt<Answer>(transpilerQuestion);
 
-  if (transpiler === 'babel') {
-    return {
-      name: 'babel',
-      options: {},
-      dependencies: [],
-      devDependencies: [],
-    };
-  } else if (transpiler === 'typescript') {
-    return {
-      name: 'typescript',
-      options: {},
-      dependencies: [],
-      devDependencies: [],
-    };
+  if (transpiler === 'none') {
+    return undefined;
   }
 
-  return undefined;
+  return generateTranspilerPlugin(transpiler);
+}
+
+function generateTranspilerPlugin(transpiler: Transpiler): Plugin {
+  return {
+    name: transpiler,
+    options: {},
+    dependencies: [],
+    devDependencies: [getPackages()[transpiler]],
+  };
 }

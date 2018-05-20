@@ -1,5 +1,6 @@
 import { Preset } from './';
 import { defaultPort, defaultPackageManager } from './defaultValues';
+import getPackages from '../utils/getPackages';
 
 const typescriptPreset: Preset = {
   name: 'typescript',
@@ -9,10 +10,10 @@ const typescriptPreset: Preset = {
     name: 'typescript',
     options: {},
     dependencies: [],
-    devDependencies: ['@cszatma/express-plugin-typescript'],
+    devDependencies: [getPackages().typescript],
   },
   dependencies: ['body-parser'],
-  devDependencies: ['@types/express', '@types/body-parser'],
+  devDependencies: ['@types/express', '@types/body-parser', '@types/node'],
 };
 
 export default typescriptPreset;
