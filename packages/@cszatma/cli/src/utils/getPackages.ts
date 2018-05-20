@@ -6,12 +6,30 @@ const packagesDir = path.join(__dirname, '../../../../');
 export const resolveLocal = (packageName: string) =>
   path.resolve(packagesDir, packageName);
 
-// Resolve a the project's dependency rather than the cli's
+// Resolve the project's dependency rather than the cli's
 export const resolveProjectDep = (packageName: string) =>
   path.resolve(process.cwd(), 'node_modules', packageName);
 
+export interface CEAPackages {
+  expressScripts: string;
+  babel: string;
+  typescript: string;
+  linter: string;
+  react: string;
+  sharedUtils: string;
+  [key: string]: string;
+}
+
+let packages: CEAPackages;
+
 export default function getPackages() {
-  const packages: { [key: string]: string } = {
+  // Cache packages to quickly return them later
+  if (packages) {
+    return packages;
+  }
+
+  // Initialize all packages
+  packages = {
     expressScripts: '@cszatma/express-scripts',
     babel: '@cszatma/express-plugin-babel',
     typescript: '@cszatma/express-plugin-typescript',
