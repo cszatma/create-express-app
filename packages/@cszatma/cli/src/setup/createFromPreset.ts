@@ -1,13 +1,17 @@
 import path from 'path';
+import chalk from 'chalk';
 import { logWithSpinner, stopSpinner } from 'node-shared-utils';
 import { writeTemplate } from 'js-template-parser';
 
 import { Preset } from '../presets';
 import getPackages, { resolveProjectDep } from '../utils/getPackages';
 import install from '../utils/install';
+import { combineDependencies } from '../utils/flattenPresetDeps';
 
-const defaultDependencies = ['express'];
-const defaultDevDependencies = ['nodemon'];
+const defaultDependences = {
+  dependencies: ['express'],
+  devDependencies: ['nodemon', getPackages().expressScripts],
+};
 
 export default async function createFromPreset(
   preset: Preset,
@@ -17,24 +21,28 @@ export default async function createFromPreset(
   const ceaPackages = getPackages();
   stopSpinner(true);
 
-  // Install main required packages
-  const dependencies = [...defaultDependencies, ...preset.dependencies];
+  // Get all the dependencies needed
+  const allDeps = combineDependencies(defaultDependences, preset);
+
+  // Install all the dependencies
   console.log(
     '📦',
-    `Installing ${dependencies.join(', ')} as dependencies...\n`,
+    `Installing ${allDeps.dependencies
+      .map(dep => chalk.green(dep))
+      .join(', ')} as dependencies...\n`,
   );
-  await install(preset.packageManager, defaultDependencies, targetDir, []);
+  await install(preset.packageManager, allDeps.dependencies, targetDir, []);
 
-  const devDependencies = [
-    ...defaultDevDependencies,
-    ...preset.devDependencies,
-    ceaPackages.expressScripts,
-  ];
+  // Install all the devDependencies
   console.log(
     '\n📦',
-    `Installing ${devDependencies.join(', ')} as devDependencies...\n`,
+    `Installing ${allDeps.devDependencies
+      .map(dep => chalk.green(dep))
+      .join(', ')} as devDependencies...\n`,
   );
-  await install(preset.packageManager, devDependencies, targetDir, ['-D']);
+  await install(preset.packageManager, allDeps.devDependencies, targetDir, [
+    '-D',
+  ]);
 
   // Generate the template files
   const generateTemplate = require(resolveProjectDep(
@@ -42,11 +50,13 @@ export default async function createFromPreset(
   )).default;
 
   logWithSpinner('\n📁', 'Generating project files...\n');
+
   const options = {
     name: path.basename(targetDir),
     port: preset.port,
-    bodyParser: dependencies.includes('body-parser'),
+    bodyParser: allDeps.dependencies.includes('body-parser'),
   };
   await generateTemplate(writeTemplate, { options }, targetDir);
+
   stopSpinner(true);
 }
