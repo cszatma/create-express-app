@@ -1,7 +1,7 @@
 import inquirer, { Question } from 'inquirer';
 import { yarnExists, logError } from 'node-shared-utils';
 
-export type PackageManager = 'yarn' | 'npm';
+import { PackageManager } from '../presets';
 
 interface Answer {
   packageManager: PackageManager;

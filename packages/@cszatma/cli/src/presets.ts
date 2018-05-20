@@ -1,5 +1,8 @@
 import { yarnExists } from 'node-shared-utils';
 
+export type PackageManager = 'yarn' | 'npm';
+export type Transpiler = 'babel' | 'typescript';
+
 export interface Plugin {
   name: string;
   options: any;
@@ -9,7 +12,7 @@ export interface Plugin {
 
 export interface Preset {
   name: string;
-  packageManager: 'yarn' | 'npm';
+  packageManager: PackageManager;
   port: number;
   transpiler?: Plugin;
   linter?: Plugin;
