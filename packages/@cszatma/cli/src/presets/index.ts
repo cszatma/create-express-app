@@ -1,5 +1,3 @@
-import { yarnExists } from 'node-shared-utils';
-
 import defaultPreset from './default';
 import typescriptPreset from './typescript';
 import reactPreset from './react';
@@ -26,10 +24,6 @@ export interface Preset {
   devDependencies: string[];
 }
 
-// Constants
-export const defaultPackageManager = yarnExists() ? 'yarn' : 'npm';
-
-export const defaultPort = 8000;
 export const CUSTOM_PRESET_KEY = '__custom__';
 
 const presets: { [key: string]: Preset } = {

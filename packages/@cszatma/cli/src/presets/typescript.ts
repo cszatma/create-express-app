@@ -1,4 +1,5 @@
-import { defaultPort, defaultPackageManager, Preset } from './';
+import { Preset } from './';
+import { defaultPort, defaultPackageManager } from './defaultValues';
 
 const typescriptPreset: Preset = {
   name: 'typescript',
