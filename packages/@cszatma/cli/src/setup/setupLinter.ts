@@ -4,7 +4,7 @@ import createJSFile from '../utils/createJSFile';
 
 import { Preset } from '../presets';
 import { resolveProjectDep } from '../utils/getPackages';
-import PackageJson from '../utils/packageJson';
+import PackageJson from '../utils/PackageJson';
 
 export default function setupLinter(
   preset: Preset,
@@ -33,6 +33,8 @@ export default function setupLinter(
       path.join(targetDir, '.eslintrc.js'),
       createJSFile(configs.eslint),
     );
+
+    packageJson.addScript('lint', 'eslint --fix');
   }
 
   // Write prettier config
@@ -41,11 +43,17 @@ export default function setupLinter(
       path.join(targetDir, 'prettier.config.js'),
       createJSFile(configs.prettier),
     );
+
+    packageJson.addScript(
+      'format',
+      `prettier --write "src/**/*.${usingTypescript ? '(js|ts)' : 'js'}"`,
+    );
   }
 
   // Write lint-staged config
   if (configs.lintStaged) {
     packageJson.addField('lint-staged', configs.lintStaged);
+    packageJson.addScript('precommit', 'lint-staged');
   }
 
   // Setup tslint
@@ -63,6 +71,11 @@ export default function setupLinter(
     fs.writeFileSync(
       path.join(targetDir, 'tslint.json'),
       JSON.stringify(tslint, null, 2),
+    );
+
+    packageJson.addScript(
+      'lint',
+      'tslint -c ./tslint.json -p ./tsconfig.json --fix',
     );
   }
 }
