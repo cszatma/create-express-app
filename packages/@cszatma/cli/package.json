@@ -37,6 +37,7 @@
     "deepmerge": "^2.1.0",
     "fs-extra": "^6.0.1",
     "inquirer": "^5.2.0",
+    "javascript-stringify": "^1.6.0",
     "js-template-parser": "^0.1.0",
     "lodash": "^4.17.10",
     "node-shared-utils": "^0.1.0",
