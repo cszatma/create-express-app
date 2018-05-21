@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs-extra';
 import chalk from 'chalk';
 import { logWithSpinner, stopSpinner } from 'node-shared-utils';
 import { writeTemplate } from 'js-template-parser';
@@ -7,6 +8,8 @@ import { Preset } from '../presets';
 import getPackages, { resolveProjectDep } from '../utils/getPackages';
 import install from '../utils/install';
 import { combineDependencies } from '../utils/flattenPresetDeps';
+import setupTranspiler from './setupTranspiler';
+import setupLinter from './setupLinter';
 
 const defaultDependences = {
   dependencies: ['express'],
@@ -57,6 +60,32 @@ export default async function createFromPreset(
     bodyParser: allDeps.dependencies.includes('body-parser'),
   };
   await generateTemplate(writeTemplate, { options }, targetDir);
+
+  stopSpinner(true);
+
+  // Setup each additional part
+
+  // Setup transpiler
+  if (preset.transpiler) {
+    logWithSpinner('🚀', `Setting up ${preset.transpiler.name}...\n`);
+
+    await setupTranspiler(preset.transpiler, targetDir, {
+      options,
+    });
+  }
+
+  // Setup eslint/tslint/prettier/lint-staged
+  if (preset.linter) {
+    logWithSpinner(
+      '🗃️',
+      `Setting up ${preset.linter.name
+        .split('-')
+        .map(l => chalk.green(l))
+        .join(' and ')}...\n`,
+    );
+
+    setupLinter(preset, targetDir, packageJson);
+  }
 
   stopSpinner(true);
 }
