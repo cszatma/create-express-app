@@ -35,7 +35,9 @@ export default async function extraPackagesPrompt(
 
   // Add type definitions for each package if using typescript
   const typedefs = usingTypescript
-    ? extraPackages.map(pkg => `@types/${pkg}`).concat('@types/node')
+    ? extraPackages
+        .map(pkg => `@types/${pkg}`)
+        .concat(['@types/express', '@types/node'])
     : [];
 
   return {

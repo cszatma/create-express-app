@@ -43,7 +43,7 @@ export default async function frontEndPrompt(): Promise<Optional<Plugin>> {
   ]);
 
   // User doesn't want a front end framework
-  if (!frontEnd) {
+  if (frontEnd === 'none') {
     return undefined;
   }
 
