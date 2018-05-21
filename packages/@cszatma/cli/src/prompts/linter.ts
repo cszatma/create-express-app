@@ -1,11 +1,11 @@
 import inquirer, { Question } from 'inquirer';
 import { Optional, gitExists } from 'node-shared-utils';
 
-import { Plugin } from '../presets';
+import { Linter } from '../presets';
 
 interface Answers {
   linter: string;
-  lintOn?: boolean;
+  lintOn: Optional<boolean>;
 }
 
 const linterQuestion = (typescript: boolean): Question<Answers> => ({
@@ -54,7 +54,7 @@ const lintOnQuestion: Question<Answers> = {
 
 export default async function linterPrompt(
   typescript: boolean,
-): Promise<Optional<Plugin>> {
+): Promise<Optional<Linter>> {
   // Only ask about linting on commit if the user has git
   const questions = gitExists
     ? [linterQuestion(typescript), lintOnQuestion]
@@ -71,12 +71,12 @@ export default async function linterPrompt(
   const usePrettier = linter.includes('prettier');
 
   return {
-    name: 'linter',
+    name: linter,
     options: {
       eslint: useEslint,
       tslint: useTslint,
       prettier: usePrettier,
-      lintOn,
+      lintStaged: !!lintOn,
     },
     dependencies: [],
     devDependencies: [

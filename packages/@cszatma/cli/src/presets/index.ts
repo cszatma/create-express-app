@@ -13,12 +13,21 @@ export interface Plugin {
   devDependencies: string[];
 }
 
+export interface Linter extends Plugin {
+  options: {
+    eslint: boolean;
+    tslint: boolean;
+    prettier: boolean;
+    lintStaged: boolean;
+  };
+}
+
 export interface Preset {
   name: string;
   packageManager: PackageManager;
   port: number;
   transpiler?: Plugin;
-  linter?: Plugin;
+  linter?: Linter;
   frontEnd?: Plugin;
   dependencies: string[];
   devDependencies: string[];
