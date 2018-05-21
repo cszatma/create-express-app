@@ -65,15 +65,30 @@ export default async function linterPrompt(
   }
 
   // Set the appropriate keys to later determine which packages to use
+  const useEslint = linter.includes('eslint');
+  const useTslint = linter.includes('tslint');
+  const usePrettier = linter.includes('prettier');
+
   return {
     name: 'linter',
     options: {
-      eslint: linter.includes('eslint'),
-      tslint: linter.includes('tslint'),
-      prettier: linter.includes('prettier'),
+      eslint: useEslint,
+      tslint: useTslint,
+      prettier: usePrettier,
       lintOn,
     },
     dependencies: [],
-    devDependencies: lintOn ? ['lint-staged', 'husky'] : [],
+    devDependencies: [
+      ...(useEslint ? ['eslint'] : []),
+      ...(useTslint ? ['tslint'] : []),
+      ...(usePrettier ? ['prettier'] : []),
+      ...(useEslint && usePrettier
+        ? ['eslint-config-prettier', 'eslint-plugin-prettier']
+        : []),
+      ...(useTslint && usePrettier
+        ? ['tslint-config-prettier', 'tslint-plugin-prettier']
+        : []),
+      ...(lintOn ? ['lint-staged', 'husky'] : []),
+    ],
   };
 }
