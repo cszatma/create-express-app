@@ -1,16 +1,15 @@
 import path from 'path';
-import fs from 'fs-extra';
 import chalk from 'chalk';
 import { logWithSpinner, stopSpinner } from 'node-shared-utils';
 import { writeTemplate } from 'js-template-parser';
 
 import { Preset } from '../presets';
 import getPackages, { resolveProjectDep } from '../utils/getPackages';
-import install from '../utils/install';
 import { combineDependencies } from '../utils/flattenPresetDeps';
 import setupTranspiler from './setupTranspiler';
 import setupLinter from './setupLinter';
 import PackageJson from '../utils/packageJson';
+import addEngines from './addEngines';
 
 const defaultDependences = {
   dependencies: ['express'],
@@ -22,6 +21,9 @@ export default async function createFromPreset(
   packageJson: PackageJson,
   targetDir: string,
 ): Promise<void> {
+  // Add the engines property to the package.json
+  addEngines(packageJson, preset.packageManager);
+
   const ceaPackages = getPackages();
   stopSpinner(true);
 
@@ -35,7 +37,7 @@ export default async function createFromPreset(
       .map(dep => chalk.green(dep))
       .join(', ')} as dependencies...\n`,
   );
-  packageJson.install(preset.packageManager, allDeps.dependencies);
+  await packageJson.install(preset.packageManager, allDeps.dependencies);
   // await install(preset.packageManager, allDeps.dependencies, targetDir, []);
 
   // Install all the devDependencies
@@ -45,7 +47,9 @@ export default async function createFromPreset(
       .map(dep => chalk.green(dep))
       .join(', ')} as devDependencies...\n`,
   );
-  packageJson.install(preset.packageManager, allDeps.devDependencies, ['-D']);
+  await packageJson.install(preset.packageManager, allDeps.devDependencies, [
+    '-D',
+  ]);
   // await install(preset.packageManager, allDeps.devDependencies, targetDir, [
   //   '-D',
   // ]);
