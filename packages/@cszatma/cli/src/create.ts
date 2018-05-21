@@ -50,7 +50,8 @@ export default async function create(projectName: string, options: CliOptions) {
   process.chdir(targetDir);
 
   // Create a git repo unless specified not to
-  if (!options.noGit && gitExists) {
+  const useGit = !options.noGit && gitExists;
+  if (useGit) {
     logWithSpinner(`🗃`, `Initializing git repository...`);
     execSync('git init');
   }
@@ -73,4 +74,9 @@ export default async function create(projectName: string, options: CliOptions) {
   );
 
   await createFromPreset(preset, packageJson, targetDir);
+
+  if (useGit) {
+    execSync('git add --all');
+    execSync('git commit -m "Initial commit"');
+  }
 }
