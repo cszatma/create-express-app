@@ -1,6 +1,6 @@
 import { execSync } from 'child_process';
 
-import PackageJson from '../utils/packageJson';
+import PackageJson from '../utils/PackageJson';
 import { PackageManager } from '../presets';
 
 export default function addEngines(

@@ -11,7 +11,7 @@ import choosePresetPrompt from './prompts/choosePreset';
 import customPreset from './customPreset';
 import { loadOptions } from './options';
 import { CUSTOM_PRESET_KEY } from './presets';
-import PackageJson from './utils/packageJson';
+import PackageJson from './utils/PackageJson';
 
 interface CliOptions {
   force: boolean;

@@ -1,6 +1,7 @@
 import merge from 'deepmerge';
 import fs from 'fs-extra';
 import path from 'path';
+import { sortObjectKeys } from 'node-shared-utils';
 
 import { copyValue, isArray, isFunction, isObject } from './typeCheckers';
 import { PackageManager } from '../presets';
@@ -47,6 +48,26 @@ export default class PackageJson {
     } else {
       this.extend({ [name]: value });
     }
+  }
+
+  public addScript(name: string, value: string): void {
+    const pkg = this.packageJson;
+
+    // If scripts doesn't exist yet create a new object
+    if (!('scripts' in pkg)) {
+      pkg.scripts = { [name]: value };
+      return;
+    }
+
+    // If a script with that name already exists just update the script value
+    if (name in pkg.scripts) {
+      pkg.scripts[name] = value;
+      return;
+    }
+
+    // Add the new script and sort the keys
+    pkg.scripts[name] = value;
+    pkg.scripts = sortObjectKeys(pkg.scripts);
   }
 
   public getField(key: string): any {

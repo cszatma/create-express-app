@@ -8,7 +8,7 @@ import getPackages, { resolveProjectDep } from '../utils/getPackages';
 import { combineDependencies } from '../utils/flattenPresetDeps';
 import setupTranspiler from './setupTranspiler';
 import setupLinter from './setupLinter';
-import PackageJson from '../utils/packageJson';
+import PackageJson from '../utils/PackageJson';
 import addEngines from './addEngines';
 
 const defaultDependences = {
