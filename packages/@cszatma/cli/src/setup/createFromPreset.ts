@@ -10,6 +10,7 @@ import setupTranspiler from './setupTranspiler';
 import setupLinter from './setupLinter';
 import PackageJson from '../utils/PackageJson';
 import addEngines from './addEngines';
+import addScripts from './addScripts';
 
 const defaultDependences = {
   dependencies: ['express'],
@@ -23,6 +24,7 @@ export default async function createFromPreset(
 ): Promise<void> {
   // Add the engines property to the package.json
   addEngines(packageJson, preset.packageManager);
+  addScripts(packageJson, !!preset.transpiler);
 
   const ceaPackages = getPackages();
   stopSpinner(true);
@@ -74,7 +76,10 @@ export default async function createFromPreset(
 
   // Setup transpiler
   if (preset.transpiler) {
-    logWithSpinner('🚀', `Setting up ${preset.transpiler.name}...\n`);
+    logWithSpinner(
+      '🚀',
+      `Setting up ${chalk.green(preset.transpiler.name)}...\n`,
+    );
 
     await setupTranspiler(preset, targetDir, {
       options,
