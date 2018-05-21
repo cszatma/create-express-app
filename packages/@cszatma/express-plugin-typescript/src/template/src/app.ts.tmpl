@@ -1,0 +1,27 @@
+@options
+{
+  "extend": "@cszatma/express-scripts/build/template/src/app.js.tmpl",
+  "replace": [
+    "const express = require('express');",
+    "const bodyParser = require('body-parser');",
+    "const helloRoutes = require('./routes/hello');",
+    "module.exports = app;"
+  ]
+}
+@end
+
+<%# @replace %>
+import express from 'express';
+<%# @end %>
+
+<%# @replace %>
+import bodyParser from 'body-parser';
+<%# @end %>
+
+<%# @replace %>
+import helloRoutes from './routes/hello';
+<%# @end %>
+
+<%# @replace %>
+export default app;
+<%# @end %>

@@ -1,0 +1,22 @@
+@options
+{
+  "extend": "@cszatma/express-scripts/build/template/src/routes/hello.js.tmpl",
+  "replace": [
+    "const express = require('express');",
+    "router.get('/hello', (req, res) => {",
+    "module.exports = router;"
+  ]
+}
+@end
+
+<%# @replace %>
+import express, { Request, Response } from 'express';
+<%# @end %>
+
+<%# @replace %>
+router.get('/hello', (req: Request, res: Response) => {
+<%# @end %>
+
+<%# @replace %>
+export default router;
+<%# @end %>

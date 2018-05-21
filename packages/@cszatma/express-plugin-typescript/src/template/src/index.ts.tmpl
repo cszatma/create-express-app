@@ -1,0 +1,12 @@
+@options
+{
+  "extend": "@cszatma/express-scripts/build/template/src/index.js.tmpl",
+  "replace": [
+    "const app = require('./app');"
+  ]
+}
+@end
+
+<%# @replace %>
+import app from './app';
+<%# @end %>
