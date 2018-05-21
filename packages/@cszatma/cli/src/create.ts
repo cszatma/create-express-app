@@ -11,6 +11,7 @@ import choosePresetPrompt from './prompts/choosePreset';
 import customPreset from './customPreset';
 import { loadOptions } from './options';
 import { CUSTOM_PRESET_KEY } from './presets';
+import PackageJson from './utils/packageJson';
 
 interface CliOptions {
   force: boolean;
@@ -35,15 +36,13 @@ export default async function create(projectName: string, options: CliOptions) {
   // Start creation
 
   // Create package.json
-  const packageJson = {
-    name: projectName,
-    version: '0.1.0',
-    private: true,
-  };
-
-  fs.writeFileSync(
-    path.join(targetDir, 'package.json'),
-    JSON.stringify(packageJson, null, 2),
+  const packageJson = new PackageJson(
+    {
+      name: projectName,
+      version: '0.1.0',
+      private: true,
+    },
+    targetDir,
   );
 
   // Save directory cli was executed from and change into project directory

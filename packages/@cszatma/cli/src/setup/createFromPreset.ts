@@ -10,6 +10,7 @@ import install from '../utils/install';
 import { combineDependencies } from '../utils/flattenPresetDeps';
 import setupTranspiler from './setupTranspiler';
 import setupLinter from './setupLinter';
+import PackageJson from '../utils/packageJson';
 
 const defaultDependences = {
   dependencies: ['express'],
@@ -18,7 +19,7 @@ const defaultDependences = {
 
 export default async function createFromPreset(
   preset: Preset,
-  packageJson: any,
+  packageJson: PackageJson,
   targetDir: string,
 ): Promise<void> {
   const ceaPackages = getPackages();
@@ -34,7 +35,8 @@ export default async function createFromPreset(
       .map(dep => chalk.green(dep))
       .join(', ')} as dependencies...\n`,
   );
-  await install(preset.packageManager, allDeps.dependencies, targetDir, []);
+  packageJson.install(preset.packageManager, allDeps.dependencies);
+  // await install(preset.packageManager, allDeps.dependencies, targetDir, []);
 
   // Install all the devDependencies
   console.log(
@@ -43,9 +45,10 @@ export default async function createFromPreset(
       .map(dep => chalk.green(dep))
       .join(', ')} as devDependencies...\n`,
   );
-  await install(preset.packageManager, allDeps.devDependencies, targetDir, [
-    '-D',
-  ]);
+  packageJson.install(preset.packageManager, allDeps.devDependencies, ['-D']);
+  // await install(preset.packageManager, allDeps.devDependencies, targetDir, [
+  //   '-D',
+  // ]);
 
   // Generate the template files
   const generateTemplate = require(resolveProjectDep(
@@ -87,5 +90,6 @@ export default async function createFromPreset(
     setupLinter(preset, targetDir, packageJson);
   }
 
+  packageJson.write();
   stopSpinner(true);
 }

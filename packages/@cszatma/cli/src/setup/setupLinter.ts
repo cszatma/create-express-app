@@ -4,11 +4,12 @@ import createJSFile from '../utils/createJSFile';
 
 import { Preset } from '../presets';
 import { resolveProjectDep } from '../utils/getPackages';
+import PackageJson from '../utils/packageJson';
 
 export default function setupLinter(
   preset: Preset,
   targetDir: string,
-  packageJson: any,
+  packageJson: PackageJson,
 ): void {
   const setupConfigs = require(resolveProjectDep(
     '@cszatma/express-scripts/build/setupConfigs',
@@ -41,6 +42,6 @@ export default function setupLinter(
 
   // Write lint-staged config
   if (configs.lintStaged) {
-    packageJson['lint-staged'] = configs.lintStaged;
+    packageJson.addField('lint-staged', configs.lintStaged);
   }
 }
