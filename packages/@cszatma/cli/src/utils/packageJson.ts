@@ -1,7 +1,6 @@
 import merge from 'deepmerge';
 import fs from 'fs-extra';
 import path from 'path';
-import { cloneDeep } from 'lodash';
 
 import { copyValue, isArray, isFunction, isObject } from './typeCheckers';
 import { PackageManager } from '../presets';
@@ -54,17 +53,16 @@ export default class PackageJson {
     return this.packageJson[key];
   }
 
-  public install(
+  public async install(
     packageManager: PackageManager,
     dependencies: string[],
     flags: string[] = [],
-  ): void {
+  ): Promise<void> {
     this.write();
 
     // Install dependencies then update the package.json in memory
-    install(packageManager, dependencies, this.directory, flags).then(() => {
-      this.packageJson = fs.readJSONSync(this.path);
-    });
+    await install(packageManager, dependencies, this.directory, flags);
+    this.packageJson = fs.readJSONSync(this.path);
   }
 
   public write(targetDir?: string): void {
@@ -72,7 +70,7 @@ export default class PackageJson {
       ? path.join(targetDir, 'package.json')
       : this.path;
 
-    fs.writeJSONSync(pkgPath, this.packageJson);
+    fs.writeJSONSync(pkgPath, this.packageJson, { spaces: 2 });
   }
 
   public toString(spacing: number = 2): string {
