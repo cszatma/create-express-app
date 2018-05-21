@@ -70,8 +70,47 @@ export default class PackageJson {
     pkg.scripts = sortObjectKeys(pkg.scripts);
   }
 
+  public extendScripts(scripts: { [key: string]: string }): void {
+    this.extend({ scripts });
+    this.sortFields('scripts');
+  }
+
   public getField(key: string): any {
-    return this.packageJson[key];
+    return copyValue(this.packageJson[key]);
+  }
+
+  public sortKeys(sortFn?: (a: string, b: string) => number): void {
+    this.packageJson = sortObjectKeys(this.packageJson, sortFn);
+  }
+
+  public sortFields(
+    fields: string | string[],
+    sortFn?: (a: string, b: string) => number,
+  ): void {
+    // If fields is an array, run this function on each element
+    if (Array.isArray(fields)) {
+      return fields.forEach(field => this.sortFields(field, sortFn));
+    }
+
+    // Sort all the fields
+    if (fields === '*') {
+      Object.keys(this.packageJson).forEach(key =>
+        this.sortFields(key, sortFn),
+      );
+    }
+
+    // Make sure the field exists
+    if (!(fields in this.packageJson)) {
+      throw new Error(`Property ${fields} does not exist on package.json`);
+    }
+
+    // Verify that the field is an object and then sort it
+    if (isObject(this.packageJson[fields])) {
+      this.packageJson[fields] = sortObjectKeys(
+        this.packageJson[fields],
+        sortFn,
+      );
+    }
   }
 
   public async install(
