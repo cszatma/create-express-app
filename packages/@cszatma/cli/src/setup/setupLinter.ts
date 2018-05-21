@@ -11,6 +11,9 @@ export default function setupLinter(
   targetDir: string,
   packageJson: PackageJson,
 ): void {
+  const usingTypescript =
+    preset.transpiler && preset.transpiler.name === 'typescript';
+
   const setupConfigs = require(resolveProjectDep(
     '@cszatma/express-scripts/build/setupConfigs',
   )).default;
@@ -18,7 +21,7 @@ export default function setupLinter(
   // Ignore error since this function is only called when linter is not undefined
   const options = {
     ...preset.linter!.options,
-    typescript: preset.transpiler && preset.transpiler.name === 'typescript',
+    typescript: usingTypescript,
     frontEnd: !!preset.frontEnd,
   };
 
@@ -43,5 +46,23 @@ export default function setupLinter(
   // Write lint-staged config
   if (configs.lintStaged) {
     packageJson.addField('lint-staged', configs.lintStaged);
+  }
+
+  // Setup tslint
+  if (usingTypescript) {
+    const setupTSConfigs = require(resolveProjectDep(
+      '@cszatma/express-plugin-typescript/build/setupConfigs',
+    )).default;
+
+    const { tslint } = setupTSConfigs({
+      tslint: true,
+      usePrettier: preset.linter!.options.prettier,
+    });
+
+    // Write the tslint config
+    fs.writeFileSync(
+      path.join(targetDir, 'tslint.json'),
+      JSON.stringify(tslint, null, 2),
+    );
   }
 }

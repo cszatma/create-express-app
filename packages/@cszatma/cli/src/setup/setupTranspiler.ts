@@ -1,36 +1,50 @@
+import path from 'path';
+import fs from 'fs-extra';
 import { exitFailure } from 'node-shared-utils';
 import { writeTemplate } from 'js-template-parser';
 
 import { resolveProjectDep } from '../utils/getPackages';
-import { Plugin, Transpiler } from '../presets';
+import { Preset, Transpiler } from '../presets';
 
 export default async function setupTranspiler(
-  transpiler: Plugin,
+  preset: Preset,
   targetDir: string,
   data: any = {},
 ): Promise<void> {
-  switch (transpiler.name as Transpiler) {
+  switch (preset.transpiler!.name as Transpiler) {
     case 'babel':
-      return setupBabel(transpiler, targetDir, data);
+      return setupBabel(preset, targetDir, data);
     case 'typescript':
-      return setupTypescript(transpiler, targetDir, data);
+      return setupTypescript(preset, targetDir, data);
   }
 
-  exitFailure(`Unknown transpiler ${transpiler}.`);
+  exitFailure(`Unknown transpiler ${preset.transpiler}.`);
 }
 
-function setupBabel(transpiler: Plugin, targetDir: string, data: any) {
+function setupBabel(preset: Preset, targetDir: string, data: any) {
   // TODO setup babel
 }
 
-async function setupTypescript(
-  transpiler: Plugin,
-  targetDir: string,
-  data: any,
-) {
+async function setupTypescript(preset: Preset, targetDir: string, data: any) {
   const generateTemplate = require(resolveProjectDep(
     '@cszatma/express-plugin-typescript/build/generateTemplate',
   )).default;
 
   await generateTemplate(writeTemplate, data, targetDir);
+
+  const setupConfigs = require(resolveProjectDep(
+    '@cszatma/express-plugin-typescript/build/setupConfigs',
+  )).default;
+
+  // Get tsconfig
+  const { tsconfig } = setupConfigs({
+    tsconfig: true,
+    hasFrontEnd: !!preset.frontEnd,
+  });
+
+  // Write the tsconfig
+  fs.writeFileSync(
+    path.join(targetDir, 'tsconfig.json'),
+    JSON.stringify(tsconfig, null, 2),
+  );
 }

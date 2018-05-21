@@ -76,7 +76,7 @@ export default async function createFromPreset(
   if (preset.transpiler) {
     logWithSpinner('🚀', `Setting up ${preset.transpiler.name}...\n`);
 
-    await setupTranspiler(preset.transpiler, targetDir, {
+    await setupTranspiler(preset, targetDir, {
       options,
     });
   }
