@@ -14,7 +14,6 @@ export interface CEAPackages {
   expressScripts: string;
   babel: string;
   typescript: string;
-  linter: string;
   react: string;
   sharedUtils: string;
   [key: string]: string;
@@ -33,7 +32,6 @@ export default function getPackages() {
     expressScripts: '@cszatma/express-scripts',
     babel: '@cszatma/express-plugin-babel',
     typescript: '@cszatma/express-plugin-typescript',
-    linter: '@cszatma/express-plugin-linter',
     react: '@cszatma/express-plugin-react',
     sharedUtils: 'node-shared-utils',
   };
