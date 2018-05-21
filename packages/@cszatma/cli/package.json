@@ -47,7 +47,8 @@
   "devDependencies": {
     "@types/deepmerge": "^2.1.0",
     "@types/inquirer": "^0.0.41",
-    "@types/lodash": "^4.14.109"
+    "@types/lodash": "^4.14.109",
+    "@types/semver": "^5.5.0"
   },
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
