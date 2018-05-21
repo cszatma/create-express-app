@@ -3,12 +3,12 @@ import { Optional, gitExists } from 'node-shared-utils';
 
 import { Plugin } from '../presets';
 
-interface Answer {
+interface Answers {
   linter: string;
   lintOn?: boolean;
 }
 
-const linterQuestion = (typescript: boolean): Question<Answer> => ({
+const linterQuestion = (typescript: boolean): Question<Answers> => ({
   name: 'linter',
   type: 'list',
   message: 'Pick a linter and/or formatting option:',
@@ -44,11 +44,12 @@ const linterQuestion = (typescript: boolean): Question<Answer> => ({
   ],
 });
 
-const lintOnQuestion: Question<Answer> = {
+const lintOnQuestion: Question<Answers> = {
   name: 'lintOn',
   message: 'Lint and fix on commit?',
   type: 'confirm',
   default: true,
+  when: (answers: Answers) => answers.linter !== 'none',
 };
 
 export default async function linterPrompt(
@@ -58,7 +59,7 @@ export default async function linterPrompt(
   const questions = gitExists
     ? [linterQuestion(typescript), lintOnQuestion]
     : linterQuestion(typescript);
-  const { linter, lintOn } = await inquirer.prompt<Answer>(questions);
+  const { linter, lintOn } = await inquirer.prompt<Answers>(questions);
 
   if (!linter) {
     return undefined;
