@@ -1,0 +1,43 @@
+{
+  "name": "@cszatma/express-plugin-typescript",
+  "version": "0.1.0",
+  "description": "Typescript plugin for create-express-app.",
+  "keywords": [
+    "express",
+    "cli",
+    "typescript"
+  ],
+  "author": {
+    "name": "Christopher Szatmary",
+    "email": "cs@christopherszatmary.com",
+    "url": "https://christopherszatmary.com"
+  },
+  "repository": "cszatma/create-express-app",
+  "bugs": {
+    "url": "https://github.com/cszatma/create-express-app/issues"
+  },
+  "license": "MIT",
+  "main": "build/index.js",
+  "files": [
+    "build/"
+  ],
+  "engines": {
+    "node": ">=6"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "fs-extra": "^6.0.1",
+    "globby": "^8.0.1"
+  },
+  "devDependencies": {
+    "@types/globby": "^6.1.0"
+  },
+  "scripts": {
+    "build": "tsc -p ./tsconfig.build.json && cpx \"src/template/**/*.tmpl\" build/template",
+    "clean": "rimraf build/",
+    "prepare": "yarn run clean && yarn run build",
+    "watch": "tsc -p ./tsconfig.build.json -w"
+  }
+}
