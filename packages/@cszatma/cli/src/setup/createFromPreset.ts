@@ -57,8 +57,8 @@ export default async function createFromPreset(
   // ]);
 
   // Generate the template files
-  const generateTemplate = require(resolveProjectDep(
-    '@cszatma/express-scripts/build/generateTemplate',
+  const { generateTemplate } = require(resolveProjectDep(
+    '@cszatma/express-scripts',
   )).default;
 
   logWithSpinner('\n📁', 'Generating project files...\n');

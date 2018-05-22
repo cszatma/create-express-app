@@ -14,8 +14,8 @@ export default function setupLinter(
   const usingTypescript =
     preset.transpiler && preset.transpiler.name === 'typescript';
 
-  const setupConfigs = require(resolveProjectDep(
-    '@cszatma/express-scripts/build/setupConfigs',
+  const { setupConfigs } = require(resolveProjectDep(
+    '@cszatma/express-scripts',
   )).default;
 
   // Ignore error since this function is only called when linter is not undefined
