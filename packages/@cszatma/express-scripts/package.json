@@ -20,6 +20,7 @@
   "bin": {
     "express-scripts": "build/express-scripts.js"
   },
+  "main": "build/index.js",
   "files": [
     "build/"
   ],
@@ -37,7 +38,7 @@
     "@types/globby": "^6.1.0"
   },
   "scripts": {
-    "build": "tsc -p ./tsconfig.build.json && cpx \"src/template/**/*.tmpl\" build/template",
+    "build": "tsc -p ./tsconfig.build.json && cpx \"src/generator/template/**/*.tmpl\" build/generator/template",
     "clean": "rimraf build/",
     "prepare": "yarn run clean && yarn run build",
     "watch": "tsc -p ./tsconfig.build.json -w"
