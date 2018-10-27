@@ -13,7 +13,7 @@ export default function setupFrontEnd(preset: Preset, targetDir: string) {
 
   // Create a new front end project
   const result = spawnSync(options.cli, [
-    'client',
+    options.dirName,
     ...(options.reactScripts
       ? ['--scripts-version', options.reactScripts]
       : []),
@@ -25,7 +25,7 @@ export default function setupFrontEnd(preset: Preset, targetDir: string) {
   }
 
   // Get the client dir and package.json
-  const clientDir = path.join(targetDir, 'client');
+  const clientDir = path.join(targetDir, options.dirName);
   const clientPackageJson = new PackageJson(
     require(path.join(clientDir, 'package.json')),
     clientDir,

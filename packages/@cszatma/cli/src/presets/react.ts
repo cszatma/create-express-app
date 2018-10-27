@@ -7,7 +7,9 @@ const reactPreset: Preset = {
   port: defaultPort,
   frontEnd: {
     name: 'react',
-    options: {},
+    options: {
+      dirName: 'client',
+    },
     dependencies: [],
     devDependencies: ['concurrently'],
   },

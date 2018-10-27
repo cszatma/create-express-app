@@ -8,6 +8,7 @@ import createJSFile from './createJSFile';
 interface Config {
   frontEnd?: {
     name: string;
+    dirName: string;
     reactScripts?: string;
   };
 }
@@ -16,13 +17,15 @@ export default function createConfig(preset: Preset, targetDir: string) {
   const config: Config = {};
 
   // Save front end details
-  if (preset.frontEnd) {
+  if (preset.frontEnd && preset.frontEnd.options) {
+    const frontEnd = preset.frontEnd;
     config.frontEnd = {
-      name: preset.frontEnd.name,
+      name: frontEnd.name,
+      dirName: frontEnd.options.dirName,
     };
 
-    if (preset.frontEnd.options && preset.frontEnd.options.reactScripts) {
-      config.frontEnd.reactScripts = preset.frontEnd.options.reactScripts;
+    if (frontEnd.options.reactScripts) {
+      config.frontEnd.reactScripts = frontEnd.options.reactScripts;
     }
   }
 
