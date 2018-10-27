@@ -18,7 +18,7 @@ export default async function setupTranspiler(
       return setupTypescript(preset, targetDir, data);
   }
 
-  exitFailure(`Unknown transpiler ${preset.transpiler}.`);
+  throw Error(`Unknown transpiler ${preset.transpiler}.`);
 }
 
 function setupBabel(preset: Preset, targetDir: string, data: any) {

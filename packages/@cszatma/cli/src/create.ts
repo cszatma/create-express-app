@@ -7,6 +7,7 @@ import {
   gitExists,
   logError,
   logSuccess,
+  exitFailure,
 } from 'node-shared-utils';
 import { execSync } from 'child_process';
 
@@ -35,7 +36,9 @@ export default async function create(projectName: string, options: CliOptions) {
   } else {
     fs.ensureDirSync(targetDir);
     if (!isSafeToCreateProjectIn(targetDir, projectName)) {
-      return process.exit(1);
+      return exitFailure(
+        `Error: A directory named ${projectName} already exists and it is not safe to overwrite.\n`,
+      );
     }
   }
 
