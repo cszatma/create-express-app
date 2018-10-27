@@ -19,6 +19,7 @@ import customPreset from './customPreset';
 import { loadOptions } from './options';
 import { CUSTOM_PRESET_KEY } from './presets';
 import PackageJson from './utils/PackageJson';
+import cleanUpFiles from './utils/cleanUpFiles';
 
 interface CliOptions {
   force: boolean;
@@ -58,6 +59,12 @@ export default async function create(projectName: string, options: CliOptions) {
   const originalDirectory = process.cwd();
   process.chdir(targetDir);
 
+  // Remove files if the program receives an interrupt signal
+  process.on('SIGINT', () => {
+    cleanUpFiles(originalDirectory, targetDir);
+    process.exit(130);
+  });
+
   try {
     // Create a git repo unless specified not to
     const useGit = !options.noGit && gitExists;
@@ -90,13 +97,17 @@ export default async function create(projectName: string, options: CliOptions) {
       execSync('git commit -m "Initial commit"');
     }
 
-    logSuccess(`✅ Successfully created ${projectName}. Enjoy!\n`);
+    logSuccess(`✅  Successfully created ${projectName}. Enjoy!\n`);
   } catch (error) {
-    logError(error.message);
-    logError('❌ Failed to create app. Please resolve errors and try again.\n');
+    if (error.message) {
+      logError(error.message);
+    }
+
+    logError(
+      '❌  Failed to create app. Please resolve errors and try again.\n',
+    );
     // If an error occurs cleanup any generated files.
-    process.chdir(originalDirectory);
-    fs.removeSync(targetDir);
+    cleanUpFiles(originalDirectory, targetDir);
 
     process.exit(1);
   }

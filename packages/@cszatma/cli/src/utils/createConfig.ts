@@ -35,5 +35,8 @@ export default function createConfig(preset: Preset, targetDir: string) {
   }
 
   // Write the config file
-  fs.writeFileSync(path.join(targetDir, 'cea.config.js'), createJSFile(config));
+  fs.writeFileSync(
+    path.join(targetDir, 'express-scripts.config.js'),
+    createJSFile(config),
+  );
 }
