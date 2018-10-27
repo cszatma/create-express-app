@@ -1,6 +1,4 @@
-export default (parser?: string): any => ({
-  parser: parser === 'typescript' ? 'typescript' : 'babylon',
+export default (): any => ({
   trailingComma: 'all',
   singleQuote: true,
-  tabWidth: 2,
 });

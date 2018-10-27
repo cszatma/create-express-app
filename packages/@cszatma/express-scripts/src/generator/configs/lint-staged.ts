@@ -17,7 +17,7 @@ export default (options: LintStagedOptions): any => {
     linters = {
       '*.ts': [
         'tslint -c ./tslint.json -p ./tsconfig.json --fix'.concat(
-          options.frontEnd ? '-e client/**/*' : '',
+          options.frontEnd ? ' -e client/**/*' : '',
         ),
         'git add',
       ],

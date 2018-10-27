@@ -23,9 +23,7 @@ export default function setupConfigs(options: ConfigOptions): Configs {
 
   // Generate each config as required
   if (options.prettier) {
-    configs.prettier = prettierConfig(
-      options.typescript ? 'typescript' : undefined,
-    );
+    configs.prettier = prettierConfig();
   }
 
   if (options.eslint) {
