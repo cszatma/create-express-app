@@ -26,7 +26,7 @@ export default async function createFromPreset(
 ): Promise<void> {
   // Add the engines property to the package.json
   addEngines(packageJson, preset.packageManager);
-  addScripts(packageJson, !!preset.transpiler);
+  addScripts(packageJson, !!preset.transpiler || !!preset.frontEnd);
 
   const ceaPackages = getPackages();
   stopSpinner(true);
