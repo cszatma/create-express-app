@@ -12,12 +12,16 @@ export default function setupFrontEnd(preset: Preset, targetDir: string) {
   const { options } = preset.frontEnd;
 
   // Create a new front end project
-  const result = spawnSync(options.cli, [
-    options.dirName,
-    ...(options.reactScripts
-      ? ['--scripts-version', options.reactScripts]
-      : []),
-  ]);
+  const result = spawnSync(
+    options.cli,
+    [
+      options.dirName,
+      ...(options.reactScripts
+        ? ['--scripts-version', options.reactScripts]
+        : []),
+    ],
+    { stdio: 'inherit' },
+  );
 
   // Make sure front end was created sucessfully
   if (result.status !== 0) {
