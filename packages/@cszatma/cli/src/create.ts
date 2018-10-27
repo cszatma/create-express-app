@@ -1,7 +1,13 @@
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs-extra';
-import { logWithSpinner, stopSpinner, gitExists } from 'node-shared-utils';
+import {
+  logWithSpinner,
+  stopSpinner,
+  gitExists,
+  logError,
+  logSuccess,
+} from 'node-shared-utils';
 import { execSync } from 'child_process';
 
 import checkAppName from './utils/checkAppName';
@@ -49,34 +55,46 @@ export default async function create(projectName: string, options: CliOptions) {
   const originalDirectory = process.cwd();
   process.chdir(targetDir);
 
-  // Create a git repo unless specified not to
-  const useGit = !options.noGit && gitExists;
-  if (useGit) {
-    logWithSpinner(`🗃`, `Initializing git repository...`);
-    execSync('git init');
-  }
+  try {
+    // Create a git repo unless specified not to
+    const useGit = !options.noGit && gitExists;
+    if (useGit) {
+      logWithSpinner(`🗃`, `Initializing git repository...`);
+      execSync('git init');
+    }
 
-  stopSpinner(true);
+    stopSpinner(true);
 
-  loadOptions();
+    loadOptions();
 
-  const presetAnswer = await choosePresetPrompt();
-  const preset =
-    presetAnswer === CUSTOM_PRESET_KEY
-      ? await customPreset(options.useNpm)
-      : presetAnswer;
+    const presetAnswer = await choosePresetPrompt();
+    const preset =
+      presetAnswer === CUSTOM_PRESET_KEY
+        ? await customPreset(options.useNpm)
+        : presetAnswer;
 
-  logWithSpinner(
-    '⚒️🚧',
-    `Creating new Express app in ${chalk.cyan(targetDir)} with the ${chalk.cyan(
-      preset.name,
-    )} preset.\n`,
-  );
+    logWithSpinner(
+      '⚒️🚧',
+      `Creating new Express app in ${chalk.cyan(
+        targetDir,
+      )} with the ${chalk.cyan(preset.name)} preset.\n`,
+    );
 
-  await createFromPreset(preset, packageJson, targetDir);
+    await createFromPreset(preset, packageJson, targetDir);
 
-  if (useGit) {
-    execSync('git add --all');
-    execSync('git commit -m "Initial commit"');
+    if (useGit) {
+      execSync('git add --all');
+      execSync('git commit -m "Initial commit"');
+    }
+
+    logSuccess(`✅ Successfully created ${projectName}. Enjoy!\n`);
+  } catch (error) {
+    logError(error.message);
+    logError('❌ Failed to create app. Please resolve errors and try again.\n');
+    // If an error occurs cleanup any generated files.
+    process.chdir(originalDirectory);
+    fs.removeSync(targetDir);
+
+    process.exit(1);
   }
 }
