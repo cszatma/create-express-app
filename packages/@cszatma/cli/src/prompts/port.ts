@@ -8,15 +8,11 @@ interface Answer {
 const portQuestion: Question<Answer> = {
   name: 'port',
   type: 'input',
-  message: 'What port should the server run on? (8000)',
+  message: 'What port should the server run on?',
+  default: defaultPort,
   validate: (value: string) => {
-    // Valid as it is assumed that the user wants the default
-    if (value.trim() === '') {
-      return true;
-    }
-
-    const port = parseInt(value, 10);
-    if (port) {
+    // Make sure it's an int
+    if (parseInt(value, 10)) {
       return true;
     }
 
@@ -26,11 +22,6 @@ const portQuestion: Question<Answer> = {
 
 export default async function portPrompt(): Promise<number> {
   const { port } = await inquirer.prompt<Answer>(portQuestion);
-
-  // Stick to the default port
-  if (port === '') {
-    return defaultPort;
-  }
 
   return parseInt(port, 10);
 }

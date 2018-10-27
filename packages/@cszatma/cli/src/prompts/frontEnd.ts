@@ -29,7 +29,7 @@ const frontEndQuestion = (frontEnds: string[]): Question<Answers> => ({
 const dirNameQuestion: Question<Answers> = {
   name: 'dirName',
   type: 'input',
-  message: 'What should the front end directory be called? (client)',
+  message: 'What should the front end directory be called?',
   default: 'client',
   when: (answers: Answers) => answers.frontEnd !== 'none',
 };
