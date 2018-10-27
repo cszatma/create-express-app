@@ -50,10 +50,12 @@ export default function setupLinter(
     );
   }
 
-  // Write lint-staged config
+  // Write lint-staged & husky configs
   if (configs.lintStaged) {
     packageJson.addField('lint-staged', configs.lintStaged);
-    packageJson.addScript('precommit', 'lint-staged');
+    const huskyConfig = { hooks: { 'pre-commit': 'lint-staged' } };
+    packageJson.addField('husky', huskyConfig);
+    // packageJson.addScript('precommit', 'lint-staged');
   }
 
   // Setup tslint

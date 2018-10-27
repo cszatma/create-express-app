@@ -11,6 +11,8 @@ import setupLinter from './setupLinter';
 import PackageJson from '../utils/PackageJson';
 import addEngines from './addEngines';
 import addScripts from './addScripts';
+import setupFrontEnd from './setupFrontEnd';
+import createConfig from '../utils/createConfig';
 
 const defaultDependences = {
   dependencies: ['express'],
@@ -99,6 +101,17 @@ export default async function createFromPreset(
     setupLinter(preset, targetDir, packageJson);
   }
 
+  // Setup front end
+  if (preset.frontEnd) {
+    logWithSpinner('🖥️', `Setting up ${preset.frontEnd.name}...\n`);
+    setupFrontEnd(preset, targetDir);
+  }
+
   packageJson.write();
+
+  // Save config
+  logWithSpinner('🗄️', 'Finishing up...\n');
+  createConfig(preset, targetDir);
+
   stopSpinner(true);
 }
