@@ -1,6 +1,5 @@
 import path from 'path';
 import fs from 'fs-extra';
-import { exitFailure } from 'node-shared-utils';
 import { writeTemplate } from 'js-template-parser';
 
 import { resolveProjectDep } from '../utils/getPackages';
@@ -37,14 +36,20 @@ async function setupTypescript(preset: Preset, targetDir: string, data: any) {
   )).default;
 
   // Get tsconfig
-  const { tsconfig } = setupConfigs({
+  const { tsconfig, tsconfigBuild } = setupConfigs({
     tsconfig: true,
     hasFrontEnd: !!preset.frontEnd,
   });
 
-  // Write the tsconfig
+  // Write the tsconfig.json
   fs.writeFileSync(
     path.join(targetDir, 'tsconfig.json'),
     JSON.stringify(tsconfig, null, 2),
+  );
+
+  // Write the tsconfig.build.json
+  fs.writeFileSync(
+    path.join(targetDir, 'tsconfig.build.json'),
+    JSON.stringify(tsconfigBuild, null, 2),
   );
 }
