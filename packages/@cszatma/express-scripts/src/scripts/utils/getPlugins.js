@@ -6,11 +6,10 @@ const path = require('path');
 const appDirectory = fs.realpathSync(process.cwd());
 const pkgJson = require(path.resolve(appDirectory, 'package.json'));
 
-const availablePlugins = [
-  '@cszatma/express-plugin-babel',
-  '@cszatma/express-plugin-typescript',
-  '@cszatma/express-plugin-react',
-];
+const BABEL = '@cszatma/express-plugin-babel';
+const TYPESCRIPT = '@cszatma/express-plugin-typescript';
+
+const availablePlugins = [BABEL, TYPESCRIPT];
 
 let plugins;
 
@@ -26,9 +25,8 @@ function getPlugins() {
   );
 
   return {
-    babel: usedPlugins.includes('@cszatma/express-plugin-babel'),
-    typescript: usedPlugins.includes('@cszatma/express-plugin-typescript'),
-    react: usedPlugins.includes('@cszatma/express-plugin-react'),
+    babel: usedPlugins.includes(BABEL),
+    typescript: usedPlugins.includes(TYPESCRIPT),
   };
 }
 
