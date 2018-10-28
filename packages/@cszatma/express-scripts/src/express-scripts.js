@@ -5,7 +5,7 @@ const spawnSync = require('child_process').spawnSync;
 const args = process.argv.slice(2);
 
 const scriptIndex = args.findIndex(
-  x => x === 'build' || x === 'start' || x === 'eject',
+  x => x === 'build' || x === 'start' || x === 'clean' || x === 'eject',
 );
 const script = scriptIndex === -1 ? args[0] : args[scriptIndex];
 const nodeArgs = scriptIndex > 0 ? args.slice(0, scriptIndex) : [];
@@ -13,6 +13,7 @@ const nodeArgs = scriptIndex > 0 ? args.slice(0, scriptIndex) : [];
 switch (script) {
   case 'build':
   case 'start':
+  case 'clean':
   case 'eject': {
     const result = spawnSync(
       'node',
