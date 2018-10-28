@@ -12,43 +12,59 @@ const spawnSync = require('child_process').spawnSync;
 const paths = require('./utils/paths');
 const plugins = require('./utils/getPlugins');
 const checkChildStatus = require('./utils/checkChildStatus');
+const loadConfig = require('./utils/loadConfig');
+const frontEndScripts = require('./utils/frontEndScripts');
 
 const args = process.argv.slice(2);
 
 // Setup useful variables
+
+// Parse args
+// @include<front-end>
 const includesServer = args.includes('server');
 const includesClient = args.includes('client');
+// @end-include
 const stdio = args.includes('--no-output') ? 'ignore' : 'inherit';
 
+// @include<front-end>
 // If no selection is specified start both
-const startAll = includesServer === includesClient && plugins.react;
+const startAll = includesServer === includesClient && loadConfig().frontEnd;
 const startServer = startAll || includesServer || !includesClient;
 const startClient = startAll || includesClient;
 
-const clientProgram =
-  startClient && plugins.react ? require(paths.reactStart) : undefined;
+let clientScript;
 
-if (startClient && !plugins.react) {
-  console.log(
-    chalk.red('Error: @cszatma/express-plugin-react is not installed!'),
-  );
-  process.exit(1);
+if (startClient) {
+  try {
+    clientScript = frontEndScripts().start;
+  } catch (e) {
+    console.error(chalk.red(e.message));
+    process.exit(1);
+  }
 }
+// @end-include
 
 /* Being start process */
+// @include<front-end>
 console.log(
   `Starting ${chalk.cyan(startServer ? 'server' : '')}${
     startAll ? ' and ' : ''
   }${chalk.cyan(startClient ? 'client' : '')}.\n`,
 );
+// @else
+//# console.log(`Staring ${chalk.cyan('server')}.\n`);
+// @end-include
 
+// @include<front-end>
 if (startAll) {
   // Run the server and the client
-  const serverProgram = serverProgram();
-  const concurrently = require.resolve(`${paths.appNodeModules}/concurrently`);
+  const program = serverProgram();
+  const concurrently = require.resolve(
+    `${paths.appNodeModules}/concurrently/bin/concurrently`,
+  );
   const args = [
-    `"${serverProgram.command} ${serverProgram.args.join(' ')}"`,
-    `"cd ${paths.appClient} && ${clientProgram.command} ${clientProgram.args}"`,
+    `"${program.command} ${program.args.join(' ')}"`,
+    `"cd ${paths.appClient} && node ${clientScript}"`,
     '--names',
     'Server,Client',
     '-c',
@@ -60,6 +76,8 @@ if (startAll) {
   console.log(chalk.green(`Finished running the server and client.\n`));
 } else if (startServer) {
   // Run just the server
+  // @end-include
+  // @trim
   const program = serverProgram();
   const result = spawnSync(program.command, program.args, {
     stdio,
@@ -68,17 +86,20 @@ if (startAll) {
 
   checkChildStatus(result.status, 'nodemon');
   console.log(chalk.green(`Finished running the server.\n`));
+  // @end-trim
+  // @include<react>
 } else if (startClient) {
   // Run just the client
-  const result = spawnSync(clientProgram.command, clientProgram.args, {
+  const result = spawnSync('node', [clientScript], {
     cwd: paths.appClient,
     stdio,
     env: process.env,
   });
 
-  checkChildStatus(result.status, clientProgram.command);
+  checkChildStatus(result.status, 'node');
   console.log(chalk.green('Finished running the client.\n'));
 }
+// @end-include
 
 function serverProgram() {
   let customNode;
