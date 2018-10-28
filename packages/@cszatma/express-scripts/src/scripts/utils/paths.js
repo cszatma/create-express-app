@@ -1,28 +1,24 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
+const buildDir = require('./buildDir');
+const loadConfig = require('./loadConfig');
+const resolveApp = require('./resolveApp');
 
-const plugins = require('./getPlugins');
-
-// Resolve paths relative to the root project directory
-const appDirectory = fs.realpathSync(process.cwd());
-const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
-
-// @remove-eject
-const resolvePluginPaths = plugin =>
-  resolveApp(
-    `node_modules/@cszatma/express-plugin-${plugin}/build/scripts/utils/paths`,
-  );
-const pluginPaths = {
-  ...(plugins.babel ? require(resolvePluginPaths('babel')) : {}),
-  ...(plugins.typescript ? require(resolvePluginPaths('typescript')) : {}),
-  ...(plugins.react ? require(resolvePluginPaths('react')) : {}),
-};
-// @end-remove-eject
+// @include<front-end>
+const config = loadConfig();
+const clientDir = config.frontEnd ? config.frontEnd.dirName : undefined;
+const clientPaths = clientDir
+  ? {
+      appBuildClient: resolveApp(`${buildDir}/${clientDir}`),
+      appClient: resolveApp(clientDir),
+      appClientBuild: resolveApp(`${clientDir}/build`),
+      clientPackageJson: resolveApp(`${clientDir}/package.json`),
+    }
+  : {};
+// @include<front-end>
 
 module.exports = {
-  appBuild: resolveApp('build'),
+  appBuild: resolveApp(buildDir),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('src'),
   appIndex: resolveApp('src/index'),
@@ -32,13 +28,8 @@ module.exports = {
   appTsBuildConfig: resolveApp('tsconfig.build.json'),
   appTsConfig: resolveApp('tsconfig.json'),
   // @end-include
-  // @include<react>
-  appBuildClient: resolveApp('build/client'),
-  appClient: resolveApp('client'),
-  appClientBuild: resolveApp('client/build'),
-  clientPackageJson: resolveApp('client/package.json'),
+  // @include<front-end>
+  ...clientPaths,
   // @end-include
-  // @remove-eject
-  ...pluginPaths,
-  // @end-remove-eject
+  expressScriptsConfig: resolveApp('express-scripts.config.js'),
 };
