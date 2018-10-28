@@ -26,7 +26,7 @@ export default async function createFromPreset(
 ): Promise<void> {
   // Add the engines property to the package.json
   addEngines(packageJson, preset.packageManager);
-  addScripts(packageJson, !!preset.transpiler || !!preset.frontEnd);
+  addScripts(packageJson, preset);
 
   const ceaPackages = getPackages();
   stopSpinner(true);
@@ -103,7 +103,10 @@ export default async function createFromPreset(
 
   // Setup front end
   if (preset.frontEnd) {
-    logWithSpinner('🖥️', `Setting up ${preset.frontEnd.name}...\n`);
+    logWithSpinner(
+      '🖥️',
+      `Setting up ${chalk.green(preset.frontEnd.name)}...\n`,
+    );
     setupFrontEnd(preset, targetDir);
   }
 
