@@ -1,4 +1,5 @@
 import tsconfigConfig from './configs/tsconfig';
+import tsconfigBuild from './configs/tsconfig.build';
 import tslintConfig from './configs/tslint';
 
 export interface ConfigOptions {
@@ -10,6 +11,7 @@ export interface ConfigOptions {
 
 export interface Configs {
   tsconfig: any;
+  tsconfigBuild: any;
   tslint: any;
 }
 
@@ -19,6 +21,7 @@ export default function setupConfigs(options: ConfigOptions): Configs {
 
   if (options.tsconfig) {
     configs.tsconfig = tsconfigConfig(options.hasFrontEnd);
+    configs.tsconfigBuild = tsconfigBuild;
   }
 
   if (options.tslint) {
