@@ -8,7 +8,7 @@ import {
   logError,
   logSuccess,
   exitFailure,
-} from 'node-shared-utils';
+} from '@cszatma/cli-shared-utils';
 import { execSync } from 'child_process';
 
 import checkAppName from './utils/checkAppName';

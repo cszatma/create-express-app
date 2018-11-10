@@ -1,7 +1,7 @@
 import path from 'path';
 import os from 'os';
 import fs from 'fs-extra';
-import { exitFailure, logError } from 'node-shared-utils';
+import { exitFailure, logError } from '@cszatma/cli-shared-utils';
 
 import { Preset } from './presets';
 

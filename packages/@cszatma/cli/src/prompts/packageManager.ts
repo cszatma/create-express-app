@@ -1,5 +1,5 @@
 import inquirer, { Question } from 'inquirer';
-import { yarnExists, logError } from 'node-shared-utils';
+import { yarnExists, logError } from '@cszatma/cli-shared-utils';
 
 import { PackageManager } from '../presets';
 

@@ -1,5 +1,5 @@
 import inquirer, { Question } from 'inquirer';
-import { capitalizeString } from 'node-shared-utils';
+import { capitalizeString } from '@cszatma/cli-shared-utils';
 
 import presets, { CUSTOM_PRESET_KEY, Preset } from '../presets';
 import { loadOptions } from '../options';

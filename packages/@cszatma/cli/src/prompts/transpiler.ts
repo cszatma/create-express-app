@@ -1,5 +1,5 @@
 import inquirer, { Question } from 'inquirer';
-import { Optional } from 'node-shared-utils';
+import { Optional } from '@cszatma/cli-shared-utils';
 
 import { Plugin, Transpiler } from '../presets';
 import getPackages from '../utils/getPackages';

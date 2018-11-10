@@ -1,4 +1,4 @@
-import { yarnExists, gitExists } from 'node-shared-utils';
+import { yarnExists, gitExists } from '@cszatma/cli-shared-utils';
 
 export const defaultPackageManager = yarnExists() ? 'yarn' : 'npm';
 export const defaultPort = 8000;

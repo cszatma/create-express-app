@@ -1,7 +1,7 @@
 import merge from 'deepmerge';
 import fs from 'fs-extra';
 import path from 'path';
-import { sortObjectKeys } from 'node-shared-utils';
+import { sortObjectKeys } from '@cszatma/cli-shared-utils';
 
 import { copyValue, isArray, isFunction, isObject } from './typeCheckers';
 import { PackageManager } from '../presets';

@@ -1,5 +1,5 @@
 import inquirer, { Question } from 'inquirer';
-import { Optional, gitExists } from 'node-shared-utils';
+import { Optional, gitExists } from '@cszatma/cli-shared-utils';
 
 import { Linter } from '../presets';
 

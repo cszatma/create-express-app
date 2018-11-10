@@ -1,6 +1,6 @@
 import path from 'path';
 import chalk from 'chalk';
-import { logWithSpinner, stopSpinner } from 'node-shared-utils';
+import { logWithSpinner, stopSpinner } from '@cszatma/cli-shared-utils';
 import { writeTemplate } from '@cszatma/cli-template-parser';
 
 import { Preset } from '../presets';

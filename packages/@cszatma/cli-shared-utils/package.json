@@ -1,5 +1,5 @@
 {
-  "name": "node-shared-utils",
+  "name": "@cszatma/cli-shared-utils",
   "version": "0.1.0",
   "description": "Shared utilities for node.",
   "keywords": [

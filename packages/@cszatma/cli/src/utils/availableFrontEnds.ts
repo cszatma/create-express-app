@@ -1,4 +1,4 @@
-import { commandExists } from 'node-shared-utils';
+import { commandExists } from '@cszatma/cli-shared-utils';
 
 export interface FrontEnds {
   [key: string]: string;

@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { exitSuccess } from 'node-shared-utils';
+import { exitSuccess } from '@cszatma/cli-shared-utils';
 
 import create from './create';
 import { removePreset } from './options';

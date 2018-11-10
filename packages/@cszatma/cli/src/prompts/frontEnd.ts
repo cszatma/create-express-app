@@ -1,5 +1,5 @@
 import inquirer, { Question } from 'inquirer';
-import { Optional, capitalizeString } from 'node-shared-utils';
+import { Optional, capitalizeString } from '@cszatma/cli-shared-utils';
 
 import { Plugin } from '../presets';
 import availableFrontEnds from '../utils/availableFrontEnds';

@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import validateProjectName from 'validate-npm-package-name';
-import { logError } from 'node-shared-utils';
+import { logError } from '@cszatma/cli-shared-utils';
 
 export default function checkAppName(appName: string): void {
   const validationResult = validateProjectName(appName);

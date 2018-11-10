@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import ora from 'ora';
 
-import { Optional } from '.';
+import { Optional } from './index';
 
 export interface Message {
   symbol: string;
