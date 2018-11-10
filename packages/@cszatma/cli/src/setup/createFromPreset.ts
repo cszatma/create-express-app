@@ -10,7 +10,7 @@ import setupTranspiler from './setupTranspiler';
 import setupLinter from './setupLinter';
 import PackageJson from '../utils/PackageJson';
 import addEngines from './addEngines';
-import addScripts from './addScripts';
+import addScripts, { installScripts } from './addScripts';
 import setupFrontEnd from './setupFrontEnd';
 import createConfig from '../utils/createConfig';
 
@@ -108,6 +108,11 @@ export default async function createFromPreset(
       `Setting up ${chalk.green(preset.frontEnd.name)}...\n`,
     );
     setupFrontEnd(preset, targetDir);
+
+    // Add postinstall script to install client deps
+    packageJson.extendScripts({
+      ...installScripts(preset.packageManager, preset.frontEnd.options.dirName),
+    });
   }
 
   packageJson.write();

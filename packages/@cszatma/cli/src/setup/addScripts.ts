@@ -1,7 +1,7 @@
 import PackageJson from '../utils/PackageJson';
 import { Preset } from '../presets';
 
-const installScripts = (packageManager: string, clientDir: string) => ({
+export const installScripts = (packageManager: string, clientDir: string) => ({
   'install:client': `${
     packageManager === 'yarn' ? 'yarn --cwd' : 'npm --prefix'
   } ${clientDir} install`,
@@ -19,8 +19,5 @@ export default function addScripts(
     ...(requiresBuild ? { clean: 'express-scripts clean' } : {}),
     eject: 'express-scripts eject',
     start: `node ${requiresBuild ? 'build' : 'src'}/index.js`,
-    ...(preset.frontEnd
-      ? installScripts(preset.packageManager, preset.frontEnd.options.dirName)
-      : {}),
   });
 }
