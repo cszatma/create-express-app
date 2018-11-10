@@ -1,11 +1,12 @@
 {
-  "name": "js-template-parser",
+  "name": "@cszatma/cli-template-parser",
   "version": "0.1.0",
-  "description": "Shared utilities for node.",
+  "description": "Template parser for create-express-app cli",
   "keywords": [
     "js template",
     "parse template",
-    "js inject"
+    "js inject",
+    "cli template"
   ],
   "author": {
     "name": "Christopher Szatmary",
@@ -22,6 +23,9 @@
   ],
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "clean": "rimraf build/",

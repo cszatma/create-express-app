@@ -1,7 +1,7 @@
 import path from 'path';
 import chalk from 'chalk';
 import { logWithSpinner, stopSpinner } from 'node-shared-utils';
-import { writeTemplate } from 'js-template-parser';
+import { writeTemplate } from '@cszatma/cli-template-parser';
 
 import { Preset } from '../presets';
 import getPackages, { resolveProjectDep } from '../utils/getPackages';

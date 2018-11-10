@@ -38,7 +38,7 @@
     "fs-extra": "^7.0.0",
     "inquirer": "^6.2.0",
     "javascript-stringify": "^1.6.0",
-    "js-template-parser": "^0.1.0",
+    "@cszatma/cli-template-parser": "^0.1.0",
     "lodash": "^4.17.11",
     "node-shared-utils": "^0.1.0",
     "semver": "^5.6.0",

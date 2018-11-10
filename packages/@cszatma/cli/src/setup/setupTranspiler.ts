@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs-extra';
-import { writeTemplate } from 'js-template-parser';
+import { writeTemplate } from '@cszatma/cli-template-parser';
 
 import { resolveProjectDep } from '../utils/getPackages';
 import { Preset, Transpiler } from '../presets';
