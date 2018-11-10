@@ -46,7 +46,7 @@ export default function setupLinter(
 
     packageJson.addScript(
       'format',
-      `prettier --write "src/**/*.${usingTypescript ? '(js|ts)' : 'js'}"`,
+      `prettier --write "src/**/*.${usingTypescript ? '{js,ts}' : 'js'}"`,
     );
   }
 
@@ -55,7 +55,6 @@ export default function setupLinter(
     packageJson.addField('lint-staged', configs.lintStaged);
     const huskyConfig = { hooks: { 'pre-commit': 'lint-staged' } };
     packageJson.addField('husky', huskyConfig);
-    // packageJson.addScript('precommit', 'lint-staged');
   }
 
   // Setup tslint
